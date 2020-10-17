@@ -10,13 +10,10 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug'
 
 const prefix = "!";
-logger.info('before client');
 const bot = new Discord.Client();
-logger.info('after client');
 
 
 bot.on('ready', () => {
-    console.log("Salut c'est Bob. Prêt à casser des culs!");
     logger.info("Salut c'est Bob. Prêt à casser des culs!");
     var test = bot.channels;
 });
@@ -34,8 +31,9 @@ bot.on("message", function (message) {
             const timeTaken = Date.now() - message.createdTimestamp;
             message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
             break;
+        case "help":
+            message.reply('List of available commands : \n!ping - evaluates your ping to the server. \n!help - provides the list of available commands.');
     }
-
     // if (command === "ping") {
     //     const timeTaken = Date.now() - message.createdTimestamp;
     //     message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);

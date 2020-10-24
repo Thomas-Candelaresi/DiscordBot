@@ -1,5 +1,6 @@
 const _discord = require("discord.js");
 var _logger = require('winston');
+var config = require("./config.json");
 var _token = null;
 try {
     _token = require("./token.json");    
@@ -99,8 +100,6 @@ bot.on("message", function (message) {
     }
 });
 
-// var token = _token?.BOT_TOKEN;
-// if(token == null || token == "")
-    token = process.env.BOT_TOKEN;
+token = (config.dev_env?_token.BOT_TOKEN : process.env.BOT_TOKEN);
 bot.login(token);
 

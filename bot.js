@@ -1,10 +1,9 @@
 const _discord = require("discord.js");
 var _logger = require('winston');
+var _token = null;
 try {
-    const _token = require("./token.json");    
-} catch (error) {
-    const _token = null;
-}
+    _token = require("./token.json");    
+} catch (error) {}
 
 // Configure logger settings
 _logger.remove(_logger.transports.Console);
@@ -100,9 +99,8 @@ bot.on("message", function (message) {
     }
 });
 
-
-var token = _token?.BOT_TOKEN;
-if(token == null || token == "")
-    token = process.env.BOT_TOKEN
+// var token = _token?.BOT_TOKEN;
+// if(token == null || token == "")
+    token = process.env.BOT_TOKEN;
 bot.login(token);
 

@@ -1,16 +1,20 @@
-const Discord = require("discord.js");
-const config = require("./config.json");
-var logger = require('winston');
+const _discord = require("discord.js");
+var _logger = require('winston');
+try {
+    const _token = require("./token.json");    
+} catch (error) {
+    const _token = null;
+}
 
 // Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
+_logger.remove(_logger.transports.Console);
+_logger.add(new _logger.transports.Console, {
     colorize: true
 });
-logger.level = 'debug'
+_logger.level = 'debug'
 
 const prefix = "!";
-const bot = new Discord.Client();
+const bot = new _discord.Client();
 var classes = [];
 var wrongWeaponCommand = "Meeeeh, you didn't quite use it right mate. \n" +
     "How to use the weapon command :" +
@@ -30,12 +34,12 @@ var weaponFunctionInCorrect = function(args) {
 }
 
 var weaponCommand = function(message, args) {
-    logger.debug("classes contain:" + classes);
+    _logger.debug("classes contain:" + classes);
     var messageIfError = weaponFunctionInCorrect(args);
     if(messageIfError != null) {
         message.reply(messageIfError);
-        logger.debug("Call of weapon command with the wrong parameters :" + args);
-        logger.debug("classes contain:" + classes);
+        _logger.debug("Call of weapon command with the wrong parameters :" + args);
+        _logger.debug("classes contain:" + classes);
         return;
     }
     var response = classes[args[0]];
@@ -46,9 +50,9 @@ var weaponCommand = function(message, args) {
 };
 
 var addWeapon = function(message, args) {
-    logger.debug("classes contain:" + classes);
+    _logger.debug("classes contain:" + classes);
     if(classes[args[0]] == null) {
-        logger.debug("added " + args[0] + " to classes.");
+        _logger.debug("added " + args[0] + " to classes.");
         classes[args[0]] = {};
     }
         
@@ -56,12 +60,12 @@ var addWeapon = function(message, args) {
         message.reply("Not good mate :(");
     }
     classes[args[0]][args[1]] = args[2];
-    logger.debug("classes contain:" + classes);
+    _logger.debug("classes contain:" + classes);
     message.reply("All good mate!");
 }
 
 bot.on('ready', () => {
-    logger.info("Salut c'est Bob. Prêt à casser des culs!");
+    _logger.info("Salut c'est Bob. Prêt à casser des culs!");
     var test = bot.channels;
 });
 
@@ -73,8 +77,8 @@ bot.on("message", function (message) {
     const args = commandBody.split(' ');
     const command = args.shift().toLowerCase();
 
-    logger.debug(message.content);
-    logger.debug(command);
+    _logger.debug(message.content);
+    _logger.debug(command);
     switch(command) {
         case "ping":
             const timeTaken = Date.now() - message.createdTimestamp;
@@ -84,20 +88,20 @@ bot.on("message", function (message) {
             message.reply('List of available commands : \n!ping - evaluates your ping to the server. \n!help - provides the list of available commands.');
             break;
         case "weapon":
-            logger.debug("weapon");
-            logger.debug("command: " + command + ", parameters: " + args);
+            _logger.debug("weapon");
+            _logger.debug("command: " + command + ", parameters: " + args);
             weaponCommand(message, args);
             break;
         case "addweapon":
-            logger.debug("addWeapon");
-            logger.debug("command: " + command + ", parameters: " + args);
+            _logger.debug("addWeapon");
+            _logger.debug("command: " + command + ", parameters: " + args);
             addWeapon(message, args);
             break;
     }
 });
 
 
-var token = config.BOT_TOKEN;
+var token = _token?.BOT_TOKEN;
 if(token == null || token == "")
     token = process.env.BOT_TOKEN
 bot.login(token);

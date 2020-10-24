@@ -1,6 +1,7 @@
 const _discord = require("discord.js");
 var _logger = require('winston');
 var config = require("./config.json");
+var weapons = require("./weapons.json");
 var _token = null;
 try {
     _token = require("./token.json");    
@@ -96,6 +97,9 @@ bot.on("message", function (message) {
             _logger.debug("addWeapon");
             _logger.debug("command: " + command + ", parameters: " + args);
             addWeapon(message, args);
+            break;
+        case "thumbsup":
+            message.reply(`Sam0 approved! (☞ ͡° ͜ʖ ͡°)☞`);
             break;
     }
 });

@@ -97,5 +97,8 @@ bot.on("message", function (message) {
 });
 
 
+var token = config.BOT_TOKEN;
+if(token == null || token == "")
+    token = process.env.BOT_TOKEN
+bot.login(token);
 
-bot.login(config.BOT_TOKEN);

@@ -4,8 +4,8 @@ var config = require("./config.json");
 var weapons = require("./weapons.json");
 var _token = null;
 try {
-    _token = require("./token.json");    
-} catch (error) {}
+    _token = require("./token.json");
+} catch (error) { }
 
 // Configure logger settings
 _logger.remove(_logger.transports.Console);
@@ -25,44 +25,58 @@ var wrongWeaponCommand = "Meeeeh, you didn't quite use it right mate. \n" +
 var userNotExist = "Meeeeh, I see no loadout for that nickname. ¯\_(ツ)_/¯";
 var weaponNotExist = "Meeeeh, I see no such weapon for that nickname. ¯\_(ツ)_/¯"
 
-var weaponFunctionInCorrect = function(args) {
+var weaponFunctionInCorrect = function (args) {
     if (args.length < 1 || args.length > 2)
         return wrongWeaponCommand;
-    if(classes[args[0]] == null)
+    if (classes[args[0]] == null)
         return userNotExist;
-    if(args.length > 1 && classes[args[0]][args[1]] == null)
-    return null;
+    if (args.length > 1 && classes[args[0]][args[1]] == null)
+        return null;
 }
 
-var weaponCommand = function(message, args) {
+var weaponCommand = function (message, args) {
     _logger.debug("classes contain:" + classes);
     var messageIfError = weaponFunctionInCorrect(args);
-    if(messageIfError != null) {
+    if (messageIfError != null) {
         message.reply(messageIfError);
         _logger.debug("Call of weapon command with the wrong parameters :" + args);
         _logger.debug("classes contain:" + classes);
         return;
     }
     var response = classes[args[0]];
-    if(args.length > 1){
+    if (args.length > 1) {
         response = response[args[1]];
     }
     message.reply(response);
 };
 
-var addWeapon = function(message, args) {
+var addWeapon = function (message, args) {
     _logger.debug("classes contain:" + classes);
-    if(classes[args[0]] == null) {
+    if (classes[args[0]] == null) {
         _logger.debug("added " + args[0] + " to classes.");
         classes[args[0]] = {};
     }
-        
-    if(classes[args[0]][args[1]] != null) {
+
+    if (classes[args[0]][args[1]] != null) {
         message.reply("Not good mate :(");
     }
     classes[args[0]][args[1]] = args[2];
     _logger.debug("classes contain:" + classes);
     message.reply("All good mate!");
+}
+
+var muteToggle = function (message, isMute) {
+    _logger.debug("member: " + message.member);
+    _logger.debug("voice: " + message.member.voice);
+    _logger.debug("channel: " + message.member.voice.channel);
+    if (message.member.voice.channel) {
+        let channel = message.guild.channels.cache.get(message.member.voice.channel.id);
+        for (const [memberID, member] of channel.members) {
+            member.voice.setMute(isMute);
+        }
+    } else {
+        _logger.info('You need to join a voice channel first!');
+    }
 }
 
 bot.on('ready', () => {
@@ -79,8 +93,7 @@ bot.on("message", function (message) {
     const command = args.shift().toLowerCase();
 
     _logger.debug(message.content);
-    _logger.debug(command);
-    switch(command) {
+    switch (command) {
         case "ping":
             const timeTaken = Date.now() - message.createdTimestamp;
             message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
@@ -98,12 +111,16 @@ bot.on("message", function (message) {
             _logger.debug("command: " + command + ", parameters: " + args);
             addWeapon(message, args);
             break;
-        case "thumbsup":
-            message.reply(`Sam0 approved! (☞ ͡° ͜ʖ ͡°)☞`);
+        case "muteChannel":
+            _logger.debug("dans mute case");
+            muteToggle(message, true);
+            break;
+        case "unmuteChannel":
+            muteToggle(message, false);
             break;
     }
 });
 
-token = (config.dev_env?_token.BOT_TOKEN : process.env.BOT_TOKEN);
+token = (config.dev_env ? _token.BOT_TOKEN : process.env.BOT_TOKEN);
 bot.login(token);
 

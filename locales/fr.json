@@ -1,0 +1,10 @@
+{
+    "Hello" : "Salut",
+    "listCommands" : "Liste des commandes disponibles :",
+    "pingExplain" : "!ping - Détermine ton ping avec le serveur",
+    "muteExplain" : "!mute - Désactive le micro de tous les membres du channel",
+    "unmuteExplain" : "!unmute - Active le micro de tous les membres du channel",
+    "muteError" : "Tu dois d'abord rejoindre un channel audio",
+    "unmuteError" : "Tu n'est pas dans un channel audio, je ne peux donc pas activer les micros",
+    "pingMessage" : "Pong! La latence de ce message est de"
+}

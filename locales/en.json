@@ -1,0 +1,10 @@
+{
+	"Hello": "Hello",
+	"listCommands" : "List of available commands :",
+    "pingExplain" : "!ping - evaluates your ping to the server",
+    "muteExplain" : "!mute - mute all users from the voice channel you are in",
+	"unmuteExplain" : "!unmute - unmute all users from the voice channel you are in",
+	"muteError" : "You need to join a voice channel first",
+	"unmuteError" : "You're not in a voice channel, so I can't unmute people",
+	"pingMessage" : "Pong! This message had a latency of"
+}

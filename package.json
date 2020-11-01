@@ -10,6 +10,7 @@
     "dependencies": {
         "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
         "discord.js": "^12.3.1",
+        "i18n": "^0.13.2",
         "winston": "^3.3.3"
     },
     "scripts": {
